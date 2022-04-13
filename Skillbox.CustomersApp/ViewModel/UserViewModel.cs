@@ -69,10 +69,13 @@ namespace Skillbox.CustomersApp.ViewModel
         {
             var customer = new Customer { LastName = "Новый клиент" };
             var viewModel = new CustomerItemViewModel(customer);
+            viewModel.PropertyChanged += (object? sender, PropertyChangedEventArgs e)
+                => SaveAllCommand.RaiseCanExecuteChanged();
             Customers.Add(viewModel);
             SelectedCustomer = viewModel;
             SelectedCustomer.PhoneNumber = "";
             SelectedCustomer.LastName = "";
+            DeleteCommand.RaiseCanExecuteChanged();
         }
 
         private void Delete(object? parameter)
@@ -82,6 +85,7 @@ namespace Skillbox.CustomersApp.ViewModel
                 Customers.Remove(SelectedCustomer);
                 SelectedCustomer = null;
                 SaveAllCommand.RaiseCanExecuteChanged();
+                SaveAll(parameter);
             }
         }
 
@@ -98,8 +102,6 @@ namespace Skillbox.CustomersApp.ViewModel
             {
                 customer.Model.LastEdited = DateTime.Now;
                 customer.EditedBy = _user.GetTitle();
-                customer.HaveChanges = false;
-                RaisePropertyChanged(nameof(SelectedCustomer.Info));
             }
             await _customersDataProvider.SaveAllAsync(Customers.Select(c => c.Model).ToArray());
         }
