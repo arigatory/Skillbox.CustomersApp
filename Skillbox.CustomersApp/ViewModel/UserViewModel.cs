@@ -1,26 +1,26 @@
 ﻿using Skillbox.CustomersApp.Command;
 using Skillbox.CustomersApp.Data;
 using Skillbox.CustomersApp.Model;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Skillbox.CustomersApp.ViewModel
 {
-
-    public class CustomersViewModel : ViewModelBase
+    public class UserViewModel : ViewModelBase
     {
         private readonly ICustomersDataProvider _customersDataProvider;
 
 
         private CustomerItemViewModel? _selectedCustomer;
 
-        public CustomersViewModel(ICustomersDataProvider customersDataProvider)
+        public UserViewModel(ICustomersDataProvider customersDataProvider)
         {
             _customersDataProvider = customersDataProvider;
             AddCommand = new DelegateCommand(Add);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
+            SaveAllCommand = new DelegateCommand(SaveAll, CanSaveAll);
+
         }
 
         public bool IsCustomerSelected => SelectedCustomer is not null;
@@ -41,14 +41,13 @@ namespace Skillbox.CustomersApp.ViewModel
         }
         public DelegateCommand AddCommand { get; }
         public DelegateCommand DeleteCommand { get; }
+        public DelegateCommand SaveAllCommand { get; }
+
 
         public override async Task LoadAsync()
         {
-            if (Customers.Any())
-            {
-                return;
-            }
-
+            Customers.Clear();
+            SelectedCustomer = null;
             var customers = await _customersDataProvider.GetAllAsync();
             if (customers is not null)
             {
@@ -77,5 +76,16 @@ namespace Skillbox.CustomersApp.ViewModel
         }
 
         private bool CanDelete(object? parameter) => SelectedCustomer is not null;
+
+
+        private bool CanSaveAll(object? arg)
+        {
+            return Customers.All(c => ! c.HasErrors);
+        }
+
+        private async void SaveAll(object? obj)
+        {
+            await _customersDataProvider.SaveAllAsync(Customers.Select(c=>c.Model).ToArray());
+        }
     }
 }

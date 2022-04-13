@@ -1,5 +1,4 @@
 ﻿using Skillbox.CustomersApp.Command;
-using System;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -10,7 +9,7 @@ namespace Skillbox.CustomersApp.ViewModel
 
         private ViewModelBase? _selectedViewModel;
 
-        public MainViewModel(CustomersViewModel customersViewModel, UserSelectionViewModel userSelectionViewModel)
+        public MainViewModel(ManagerViewModel customersViewModel, ConsultantViewModel userSelectionViewModel)
         {
             CustomersViewModel = customersViewModel;
             UserSelectionViewModel = userSelectionViewModel;
@@ -18,7 +17,6 @@ namespace Skillbox.CustomersApp.ViewModel
             SelectViewModelCommand = new DelegateCommand(SelectViewModel);
             CloseWindowCommand = new DelegateCommand(CloseWindow);
         }
-
 
         public ViewModelBase? SelectedViewModel
         {
@@ -29,8 +27,8 @@ namespace Skillbox.CustomersApp.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public CustomersViewModel CustomersViewModel { get; }
-        public UserSelectionViewModel UserSelectionViewModel { get; }
+        public ManagerViewModel CustomersViewModel { get; }
+        public ConsultantViewModel UserSelectionViewModel { get; }
         public DelegateCommand SelectViewModelCommand { get; }
         public DelegateCommand CloseWindowCommand { get; }
 
@@ -41,7 +39,7 @@ namespace Skillbox.CustomersApp.ViewModel
                 await SelectedViewModel.LoadAsync();
             }
         }
-        
+
         private async void SelectViewModel(object? parameter)
         {
             SelectedViewModel = parameter as ViewModelBase;

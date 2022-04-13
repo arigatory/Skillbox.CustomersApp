@@ -10,11 +10,11 @@
         Title="Skillbox Клиенты" Height="700" Width="850" FontSize="20"
         d:DesignWidth="500" d:DesignHeight="600">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type viewModel:CustomersViewModel}">
-            <view:CustomersView/>
+        <DataTemplate DataType="{x:Type viewModel:ManagerViewModel}">
+            <view:ManagerView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:UserSelectionViewModel}">
-            <view:UserSelectionView/>
+        <DataTemplate DataType="{x:Type viewModel:ConsultantViewModel}">
+            <view:ConsultantView/>
         </DataTemplate>
     </Window.Resources>
     <Grid>

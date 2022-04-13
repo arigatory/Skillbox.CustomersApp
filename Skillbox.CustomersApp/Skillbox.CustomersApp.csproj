@@ -14,6 +14,7 @@
     <None Remove="Images\manager.png" />
     <None Remove="Images\plus.png" />
     <None Remove="Images\remove.png" />
+    <None Remove="Images\save.png" />
     <None Remove="Images\skillbox.png" />
   </ItemGroup>
 
@@ -33,6 +34,7 @@
     <Resource Include="Images\manager.png" />
     <Resource Include="Images\plus.png" />
     <Resource Include="Images\remove.png" />
+    <Resource Include="Images\save.png" />
     <Resource Include="Images\skillbox.png" />
   </ItemGroup>
 

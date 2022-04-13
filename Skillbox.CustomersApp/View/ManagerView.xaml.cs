@@ -2,9 +2,9 @@
 
 namespace Skillbox.CustomersApp.View
 {
-    public partial class CustomersView : UserControl
+    public partial class ManagerView : UserControl
     {
-        public CustomersView()
+        public ManagerView()
         {
             InitializeComponent();
         }

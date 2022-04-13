@@ -4,43 +4,43 @@ namespace Skillbox.CustomersApp.ViewModel
 {
     public class CustomerItemViewModel : ValidationViewModelBase
     {
-        private readonly Customer _model;
+        public Customer Model { get; private set; }
 
         public CustomerItemViewModel(Customer model)
         {
-            _model = model;
+            Model = model;
         }
 
-        public int Id => _model.Id;
+        public int Id => Model.Id;
 
         public string? FirstName
         {
-            get { return _model.FirstName; }
+            get { return Model.FirstName; }
             set
             {
-                _model.FirstName = value;
+                Model.FirstName = value;
                 RaisePropertyChanged();
             }
         }
 
         public string? MiddleName
         {
-            get { return _model.MiddleName; }
+            get { return Model.MiddleName; }
             set
             {
-                _model.MiddleName = value;
+                Model.MiddleName = value;
                 RaisePropertyChanged();
             }
         }
 
         public string? LastName
         {
-            get { return _model.LastName; }
+            get { return Model.LastName; }
             set
             {
-                _model.LastName = value;
+                Model.LastName = value;
                 RaisePropertyChanged();
-                if (string.IsNullOrEmpty(_model.LastName))
+                if (string.IsNullOrEmpty(Model.LastName))
                 {
                     AddError("Фамилия обязательна");
                 }
@@ -53,20 +53,20 @@ namespace Skillbox.CustomersApp.ViewModel
 
         public string? PhoneNumber
         {
-            get { return _model.PhoneNumber; }
+            get { return Model.PhoneNumber; }
             set
             {
-                _model.PhoneNumber = value;
+                Model.PhoneNumber = value;
                 RaisePropertyChanged();
             }
         }
 
         public string? PassportNumber
         {
-            get { return _model.PassportNumber; }
+            get { return Model.PassportNumber; }
             set
             {
-                _model.PassportNumber = value;
+                Model.PassportNumber = value;
                 RaisePropertyChanged();
             }
         }

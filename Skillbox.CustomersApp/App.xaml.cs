@@ -20,8 +20,8 @@ namespace Skillbox.CustomersApp
         {
             services.AddTransient<MainWindow>();
             services.AddTransient<MainViewModel>();
-            services.AddTransient<CustomersViewModel>();
-            services.AddTransient<UserSelectionViewModel>();
+            services.AddTransient<ManagerViewModel>();
+            services.AddTransient<ConsultantViewModel>();
 
             services.AddTransient<ICustomersDataProvider, CustomerDataProvider>();
         }

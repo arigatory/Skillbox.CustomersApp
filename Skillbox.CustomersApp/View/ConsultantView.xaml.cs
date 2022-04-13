@@ -18,9 +18,9 @@ namespace Skillbox.CustomersApp.View
     /// <summary>
     /// Interaction logic for UserSelectionView.xaml
     /// </summary>
-    public partial class UserSelectionView : UserControl
+    public partial class ConsultantView : UserControl
     {
-        public UserSelectionView()
+        public ConsultantView()
         {
             InitializeComponent();
         }
