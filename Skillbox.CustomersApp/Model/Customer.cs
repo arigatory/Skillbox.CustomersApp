@@ -14,5 +14,7 @@ namespace Skillbox.CustomersApp.Model
         public string? LastName { get; set; }
         public string? PhoneNumber { get; set; }
         public string? PassportNumber { get; set; }
+        public DateTime? LastEdited { get; set; }
+        public string? EditedBy { get; set; }
     }
 }

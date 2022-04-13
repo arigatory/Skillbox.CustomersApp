@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Skillbox.CustomersApp.Data;
+using Skillbox.CustomersApp.Model;
 using Skillbox.CustomersApp.ViewModel;
 using System.Windows;
 
@@ -22,6 +23,8 @@ namespace Skillbox.CustomersApp
             services.AddTransient<MainViewModel>();
             services.AddTransient<ManagerViewModel>();
             services.AddTransient<ConsultantViewModel>();
+            services.AddTransient<Consultant>();
+            services.AddTransient<Manager>();
 
             services.AddTransient<ICustomersDataProvider, CustomerDataProvider>();
         }

@@ -1,10 +1,13 @@
 ﻿using Skillbox.CustomersApp.Model;
+using System;
+using System.Text.RegularExpressions;
 
 namespace Skillbox.CustomersApp.ViewModel
 {
     public class CustomerItemViewModel : ValidationViewModelBase
     {
         public Customer Model { get; private set; }
+        
 
         public CustomerItemViewModel(Customer model)
         {
@@ -58,6 +61,18 @@ namespace Skillbox.CustomersApp.ViewModel
             {
                 Model.PhoneNumber = value;
                 RaisePropertyChanged();
+                if (string.IsNullOrEmpty(Model.PhoneNumber))
+                {
+                    AddError("Телефон обязателен");
+                }
+                else if (!Regex.Match(Model.PhoneNumber, @"^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$").Success)
+                {
+                    AddError("Не похоже не номер телефона");
+                }
+                else
+                {
+                    ClearErrors();
+                }
             }
         }
 
@@ -67,6 +82,49 @@ namespace Skillbox.CustomersApp.ViewModel
             set
             {
                 Model.PassportNumber = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+        public string? EditedBy
+        {
+            get { return Model.EditedBy; }
+            set
+            {
+                Model.EditedBy = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(Info));
+            }
+        }
+
+
+        public string Info
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Model.EditedBy))
+                {
+                    return string.Empty;
+                }
+                var lastEdited = "неизвестно когда";
+                if (Model.LastEdited.HasValue)
+                {
+                    lastEdited = Model.LastEdited.Value.ToString();
+                }
+                return $"Изменил {Model.EditedBy} {lastEdited}";
+            }
+        }
+
+
+        private bool _haveChanges = false;
+
+        public bool HaveChanges
+        {
+            get { return _haveChanges; }
+            set
+            {
+                _haveChanges = value;
                 RaisePropertyChanged();
             }
         }

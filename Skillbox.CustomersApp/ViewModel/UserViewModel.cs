@@ -1,6 +1,7 @@
 ﻿using Skillbox.CustomersApp.Command;
 using Skillbox.CustomersApp.Data;
 using Skillbox.CustomersApp.Model;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -11,13 +12,13 @@ namespace Skillbox.CustomersApp.ViewModel
     public class UserViewModel : ValidationViewModelBase
     {
         private readonly ICustomersDataProvider _customersDataProvider;
-
-
+        private readonly User _user;
         private CustomerItemViewModel? _selectedCustomer;
 
-        public UserViewModel(ICustomersDataProvider customersDataProvider)
+        public UserViewModel(ICustomersDataProvider customersDataProvider, User user)
         {
             _customersDataProvider = customersDataProvider;
+            _user = user;
             AddCommand = new DelegateCommand(Add);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
             SaveAllCommand = new DelegateCommand(SaveAll, CanSaveAll);
@@ -28,6 +29,7 @@ namespace Skillbox.CustomersApp.ViewModel
         public bool IsCustomerNotSelected => SelectedCustomer is null;
 
         public ObservableCollection<CustomerItemViewModel> Customers { get; } = new();
+
         public CustomerItemViewModel? SelectedCustomer
         {
             get => _selectedCustomer;
@@ -55,8 +57,8 @@ namespace Skillbox.CustomersApp.ViewModel
                 foreach (var customer in customers)
                 {
                     var customerVM = new CustomerItemViewModel(customer);
-                    customerVM.PropertyChanged += (object? sender, PropertyChangedEventArgs e) 
-                        =>  SaveAllCommand.RaiseCanExecuteChanged();
+                    customerVM.PropertyChanged += (object? sender, PropertyChangedEventArgs e)
+                        => SaveAllCommand.RaiseCanExecuteChanged();
                     Customers.Add(customerVM);
                 }
             }
@@ -69,6 +71,8 @@ namespace Skillbox.CustomersApp.ViewModel
             var viewModel = new CustomerItemViewModel(customer);
             Customers.Add(viewModel);
             SelectedCustomer = viewModel;
+            SelectedCustomer.PhoneNumber = "";
+            SelectedCustomer.LastName = "";
         }
 
         private void Delete(object? parameter)
@@ -85,12 +89,19 @@ namespace Skillbox.CustomersApp.ViewModel
 
         private bool CanSaveAll(object? arg)
         {
-            return Customers.All(c=> !c.HasErrors);
+            return Customers.All(c => !c.HasErrors);
         }
 
         private async void SaveAll(object? obj)
         {
-            await _customersDataProvider.SaveAllAsync(Customers.Select(c=>c.Model).ToArray());
+            foreach (var customer in Customers)
+            {
+                customer.Model.LastEdited = DateTime.Now;
+                customer.EditedBy = _user.GetTitle();
+                customer.HaveChanges = false;
+                RaisePropertyChanged(nameof(SelectedCustomer.Info));
+            }
+            await _customersDataProvider.SaveAllAsync(Customers.Select(c => c.Model).ToArray());
         }
     }
 }

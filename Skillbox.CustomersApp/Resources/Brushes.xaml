@@ -6,4 +6,7 @@
     <SolidColorBrush x:Key="HeaderForegroundColor" Color="White" />
     <SolidColorBrush x:Key="ButtonBackgroundColor" Color="#e8e8e8" />
     <SolidColorBrush x:Key="ErrorColor" Color="#f44336" />
+    <SolidColorBrush x:Key="NiceGreenColor" Color="#687266" />
+
+    
 </ResourceDictionary>
