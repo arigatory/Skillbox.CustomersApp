@@ -1,0 +1,63 @@
+﻿<Window x:Class="Skillbox.CustomersApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Skillbox.CustomersApp.Controls"
+        xmlns:view="clr-namespace:Skillbox.CustomersApp.View"
+        xmlns:viewModel="clr-namespace:Skillbox.CustomersApp.ViewModel"
+        mc:Ignorable="d"
+        Title="Skillbox Клиенты" Height="700" Width="850" FontSize="20"
+        d:DesignWidth="500" d:DesignHeight="600">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModel:CustomersViewModel}">
+            <view:CustomersView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:UserSelectionViewModel}">
+            <view:UserSelectionView/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+
+        <Menu FontSize="20" Background="{StaticResource ButtonBackgroundColor}">
+            <MenuItem Header="_Файл">
+                <MenuItem Header="_Завершить приложение"
+                          Command="{Binding CloseWindowCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
+                            AncestorType={x:Type Window}}}"/>
+            </MenuItem>
+            <MenuItem Header="_Выбор пользователя">
+                <MenuItem Header="_Менеджер" 
+                          Command="{Binding SelectViewModelCommand}"
+                          CommandParameter="{Binding CustomersViewModel}">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/manager.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Консультант"
+                          Command="{Binding SelectViewModelCommand}"
+                          CommandParameter="{Binding UserSelectionViewModel}">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/consultant.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <controls:HeaderControl Grid.Row="1"/>
+
+        <ContentControl Grid.Row="2" Content="{Binding SelectedViewModel}"/>
+
+
+        <StatusBar Grid.Row="3">
+            <StatusBarItem FontSize="20" Content=" © Skillbox" Background="{StaticResource SkillboxColor}" Foreground="White"/>
+        </StatusBar>
+    </Grid>
+</Window>

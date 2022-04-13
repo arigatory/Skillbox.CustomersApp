@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\add-plus.png" />
+    <None Remove="Images\consultant.png" />
+    <None Remove="Images\main.mp4" />
+    <None Remove="Images\manager.png" />
+    <None Remove="Images\plus.png" />
+    <None Remove="Images\remove.png" />
+    <None Remove="Images\skillbox.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\main.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\add-plus.png" />
+    <Resource Include="Images\consultant.png" />
+    <Resource Include="Images\manager.png" />
+    <Resource Include="Images\plus.png" />
+    <Resource Include="Images\remove.png" />
+    <Resource Include="Images\skillbox.png" />
+  </ItemGroup>
+
+</Project>

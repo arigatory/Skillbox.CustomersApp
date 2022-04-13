@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="ToolTip">
+        <Setter Property="FontSize" Value="20"/>
+    </Style>
+    <Style TargetType="TextBox">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="8"/>
+            </Style>
+        </Style.Resources>
+        <Setter Property="Background" Value="{StaticResource SkillboxLightColor}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <StackPanel>
+                        <AdornedElementPlaceholder x:Name="placeholder"/>
+                        <TextBlock Margin="5 0" 
+                            Foreground="{StaticResource ErrorColor}" 
+                            Text="{Binding ElementName=placeholder,
+                                    Path=AdornedElement.(Validation.Errors)/ErrorContent}"
+                        FontSize="15"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="5"/>
+        <Style.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="Background" Value="{StaticResource SkillboxDarkColor}"/>
+            </Trigger>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="Background" Value="{StaticResource ErrorColor}"/>
+                <Setter Property="Margin" Value="0 0 0 20"/>
+                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, 
+                    Path=(Validation.Errors)/ErrorContent}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
