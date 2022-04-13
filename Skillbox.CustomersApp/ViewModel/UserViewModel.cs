@@ -2,12 +2,13 @@
 using Skillbox.CustomersApp.Data;
 using Skillbox.CustomersApp.Model;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Skillbox.CustomersApp.ViewModel
 {
-    public class UserViewModel : ViewModelBase
+    public class UserViewModel : ValidationViewModelBase
     {
         private readonly ICustomersDataProvider _customersDataProvider;
 
@@ -53,10 +54,14 @@ namespace Skillbox.CustomersApp.ViewModel
             {
                 foreach (var customer in customers)
                 {
-                    Customers.Add(new CustomerItemViewModel(customer));
+                    var customerVM = new CustomerItemViewModel(customer);
+                    customerVM.PropertyChanged += (object? sender, PropertyChangedEventArgs e) 
+                        =>  SaveAllCommand.RaiseCanExecuteChanged();
+                    Customers.Add(customerVM);
                 }
             }
         }
+
 
         private void Add(object? parameter)
         {
@@ -72,15 +77,15 @@ namespace Skillbox.CustomersApp.ViewModel
             {
                 Customers.Remove(SelectedCustomer);
                 SelectedCustomer = null;
+                SaveAllCommand.RaiseCanExecuteChanged();
             }
         }
 
         private bool CanDelete(object? parameter) => SelectedCustomer is not null;
 
-
         private bool CanSaveAll(object? arg)
         {
-            return Customers.All(c => ! c.HasErrors);
+            return Customers.All(c=> !c.HasErrors);
         }
 
         private async void SaveAll(object? obj)
