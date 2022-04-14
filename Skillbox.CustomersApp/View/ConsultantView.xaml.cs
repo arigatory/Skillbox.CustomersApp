@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace Skillbox.CustomersApp.View
 {
     /// <summary>
-    /// Interaction logic for UserSelectionView.xaml
+    /// UI для консультанта, весь класс описан на XAML
     /// </summary>
     public partial class ConsultantView : UserControl
     {

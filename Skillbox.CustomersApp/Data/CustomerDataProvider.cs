@@ -7,16 +7,42 @@ using System.Threading.Tasks;
 
 namespace Skillbox.CustomersApp.Data
 {
+    /// <summary>
+    /// Контакт, которому должен следовать источник данных.
+    /// Для простоты реализации он должен уметь читать все данные и записывать все данные.
+    /// В реальном приложении, где используется обращение к API или базе данных, мы бы добавили больше методов
+    /// для возможности работы и с единичной записью
+    /// </summary>
     public interface ICustomersDataProvider
     {
+        /// <summary>
+        /// Запрос для получения всех клиентов из источника данных
+        /// </summary>
+        /// <returns>Коллекция клиентов</returns>
         Task<IEnumerable<Customer>?> GetAllAsync();
+
+        /// <summary>
+        /// Сохраняем все данные
+        /// </summary>
+        /// <param name="customers"></param>
+        /// <returns>Ничего не возвращаем</returns>
         Task SaveAllAsync(IEnumerable<Customer> customers);
     }
 
+    /// <summary>
+    /// Простая реализация интерфейса ICustomersDataProvider
+    /// </summary>
     public class CustomerDataProvider : ICustomersDataProvider
     {
+        /// <summary>
+        /// имя файла, в котором будут храниться клиенты
+        /// </summary>
         private readonly string _fileName = "customers.json";
 
+        /// <summary>
+        /// Реализация метода для получения всех клиентов из источника данных
+        /// </summary>
+        /// <returns>Коллекция клиентов</returns>
         public async Task<IEnumerable<Customer>?> GetAllAsync()
         {
             try
@@ -36,6 +62,11 @@ namespace Skillbox.CustomersApp.Data
 
         }
 
+        /// <summary>
+        /// Реализация метода для сохранения всех данных
+        /// </summary>
+        /// <param name="customers"></param>
+        /// <returns>Ничего не возвращаем</returns>
         public async Task SaveAllAsync(IEnumerable<Customer> customers)
         {
             string fileName = "customers.json";
