@@ -17,6 +17,11 @@ namespace Skillbox.CustomersApp
             _serviceProvider = services.BuildServiceProvider();
         }
 
+        /// <summary>
+        /// Настраиваем dependency injection 
+        /// Внедряем зависимости сразу, чтобы потом по всему коду конструкторы не писать.
+        /// </summary>
+        /// <param name="services"></param>
         private void ConfigureServices(ServiceCollection services)
         {
             services.AddTransient<MainWindow>();

@@ -9,12 +9,23 @@ using System.Threading.Tasks;
 
 namespace Skillbox.CustomersApp.ViewModel
 {
+    /// <summary>
+    /// Класс реализующий основную логику приложения. У нас она одинаковая для Консультанта и Менеджера, 
+    /// поэтому это базовый класс длы ManagerViewModel и ConsultantViewModel
+    /// Основные различия описаны в классах View, задаваемых языком разметки XAML, поскольку этого достаточно для решения
+    /// бизнес-задачи.
+    /// </summary>
     public class UserViewModel : ValidationViewModelBase
     {
         private readonly ICustomersDataProvider _customersDataProvider;
         private readonly User _user;
         private CustomerItemViewModel? _selectedCustomer;
 
+        /// <summary>
+        /// Констрктор UserViewModel
+        /// </summary>
+        /// <param name="customersDataProvider">Поставщик данных</param>
+        /// <param name="user">Пользователь, который работает в системе (будет подставлен либо Manager, либо Consultant)</param>
         public UserViewModel(ICustomersDataProvider customersDataProvider, User user)
         {
             _customersDataProvider = customersDataProvider;
@@ -25,11 +36,25 @@ namespace Skillbox.CustomersApp.ViewModel
 
         }
 
+        /// <summary>
+        /// Свойство для проверки, выбран ли клиент
+        /// </summary>
         public bool IsCustomerSelected => SelectedCustomer is not null;
+
+        /// <summary>
+        /// Можно было бы добавить конвертер, но решил, что со свойством будет лаконичнее. Нужен, чтобы показывать/скрывать
+        /// приглашение пользователю для выбора клиента при начале работы.
+        /// </summary>
         public bool IsCustomerNotSelected => SelectedCustomer is null;
 
+        /// <summary>
+        /// Все клиенты, которые будут отображаться
+        /// </summary>
         public ObservableCollection<CustomerItemViewModel> Customers { get; } = new();
 
+        /// <summary>
+        /// Выбранный клиент
+        /// </summary>
         public CustomerItemViewModel? SelectedCustomer
         {
             get => _selectedCustomer;
@@ -42,11 +67,26 @@ namespace Skillbox.CustomersApp.ViewModel
                 DeleteCommand.RaiseCanExecuteChanged();
             }
         }
+
+        /// <summary>
+        /// Команда добавления нового клиента
+        /// </summary>
         public DelegateCommand AddCommand { get; }
+
+        /// <summary>
+        /// Команда удаления выбранного клиента
+        /// </summary>
         public DelegateCommand DeleteCommand { get; }
+
+        /// <summary>
+        /// Команда сохранения всех клиентов
+        /// </summary>
         public DelegateCommand SaveAllCommand { get; }
 
-
+        /// <summary>
+        /// Загружаем все, что нужно для работы при отображении View. 
+        /// Клиенты будут "конвертированы" в CustomerItemViewModel, чтобы пользователь мог видеть изменения на лету.
+        /// </summary>
         public override async Task LoadAsync()
         {
             Customers.Clear();
@@ -64,7 +104,10 @@ namespace Skillbox.CustomersApp.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Метод вызывается при выполнении команды ДобавитьКлиента
+        /// </summary>
+        /// <param name="parameter">не используется, но требуется сигнатурой контракта</param>
         private void Add(object? parameter)
         {
             var customer = new Customer { LastName = "Новый клиент" };
@@ -78,6 +121,10 @@ namespace Skillbox.CustomersApp.ViewModel
             DeleteCommand.RaiseCanExecuteChanged();
         }
 
+        /// <summary>
+        /// Метод вызывается при выполнении команды УдалитьКлиента
+        /// </summary>
+        /// <param name="parameter">не используется, но требуется сигнатурой контракта</param>
         private void Delete(object? parameter)
         {
             if (SelectedCustomer is not null)
@@ -89,14 +136,26 @@ namespace Skillbox.CustomersApp.ViewModel
             }
         }
 
+        /// <summary>
+        /// Метод вызывается при проверке возможности выполнения команды УдалитьКлиента
+        /// </summary>
+        /// <param name="parameter">не используется, но требуется сигнатурой контракта</param>
         private bool CanDelete(object? parameter) => SelectedCustomer is not null;
 
-        private bool CanSaveAll(object? arg)
+        /// <summary>
+        /// Метод вызывается при проверке возможности выполнения команды СохранитьВсе
+        /// </summary>
+        /// <param name="parameter">не используется, но требуется сигнатурой контракта</param>
+        private bool CanSaveAll(object? parameter)
         {
             return Customers.All(c => !c.HasErrors);
         }
 
-        private async void SaveAll(object? obj)
+        /// <summary>
+        /// Метод вызывается при выполнении команды СохранитьВсе
+        /// </summary>
+        /// <param name="parameter">не используется, но требуется сигнатурой контракта</param>
+        private async void SaveAll(object? parameter)
         {
             foreach (var customer in Customers)
             {

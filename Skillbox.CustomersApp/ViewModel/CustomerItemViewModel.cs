@@ -1,21 +1,35 @@
 ﻿using Skillbox.CustomersApp.Model;
-using System;
 using System.Text.RegularExpressions;
 
 namespace Skillbox.CustomersApp.ViewModel
 {
+    /// <summary>
+    /// ViewModel для работы с одной записью Клиента
+    /// </summary>
     public class CustomerItemViewModel : ValidationViewModelBase
     {
+        /// <summary>
+        /// В модели храним реальные данные их хранилища.
+        /// </summary>
         public Customer Model { get; private set; }
-        
 
+        /// <summary>
+        /// Конструктор для создания ViewModel для работы с одной записью Клиента
+        /// </summary>
+        /// <param name="model">Модель, которую мы берем из какого-либо хранилища</param>
         public CustomerItemViewModel(Customer model)
         {
             Model = model;
         }
 
+        /// <summary>
+        /// Пользовательскому интерфейсу не обязательно знать об изменениях Id, поэтому просто возращаем его.
+        /// </summary>
         public int Id => Model.Id;
 
+        /// <summary>
+        /// При записи имени уведомляем об этом пользовательский интерфейс, чтобы сразу менять текст в панели навигации.
+        /// </summary>
         public string? FirstName
         {
             get { return Model.FirstName; }
@@ -26,6 +40,9 @@ namespace Skillbox.CustomersApp.ViewModel
             }
         }
 
+        /// <summary>
+        /// При записи отчества уведомляем об этом пользовательский интерфейс, чтобы сразу менять текст в панели навигации.
+        /// </summary>
         public string? MiddleName
         {
             get { return Model.MiddleName; }
@@ -36,6 +53,10 @@ namespace Skillbox.CustomersApp.ViewModel
             }
         }
 
+        /// <summary>
+        /// При записи фамилии уведомляем об этом пользовательский интерфейс, чтобы сразу менять текст в панели навигации.
+        /// Кроме того проверям, что фамилия обязательно заполнена.
+        /// </summary>
         public string? LastName
         {
             get { return Model.LastName; }
@@ -54,6 +75,11 @@ namespace Skillbox.CustomersApp.ViewModel
             }
         }
 
+        /// <summary>
+        /// При записи телефона уведомляем об этом пользовательский интерфейс. В данный момент это не обязательно,
+        /// но может потребоваться, если в навигации рядом с именем мы захотим отображать и телефон.
+        /// Кроме того проверям регулярным выражением, что телефон обязательно похож на телефон, а не просто строка.
+        /// </summary>
         public string? PhoneNumber
         {
             get { return Model.PhoneNumber; }
@@ -76,6 +102,9 @@ namespace Skillbox.CustomersApp.ViewModel
             }
         }
 
+        /// <summary>
+        /// При записи данных о паспорте уведомляем об этом пользовательский интерфейс.
+        /// </summary>
         public string? PassportNumber
         {
             get { return Model.PassportNumber; }
@@ -86,7 +115,10 @@ namespace Skillbox.CustomersApp.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Свойство для доступа к информации о том, кто внес изменения. У нас это менеджер или консультант, но в более сложном
+        /// приложении может потребовать хранить, например, ФИО и должность, поэтому решил оставить строкой для удобства логирования.
+        /// </summary>
         public string? EditedBy
         {
             get { return Model.EditedBy; }
@@ -98,7 +130,9 @@ namespace Skillbox.CustomersApp.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Вычисляем строку, которую будем показывать пользователю об имеющихся изменениях в записи.
+        /// </summary>
         public string Info
         {
             get
@@ -113,19 +147,6 @@ namespace Skillbox.CustomersApp.ViewModel
                     lastEdited = Model.LastEdited.Value.ToString();
                 }
                 return $"Изменил {Model.EditedBy} {lastEdited}";
-            }
-        }
-
-
-        private bool _haveChanges = false;
-
-        public bool HaveChanges
-        {
-            get { return _haveChanges; }
-            set
-            {
-                _haveChanges = value;
-                RaisePropertyChanged();
             }
         }
     }
