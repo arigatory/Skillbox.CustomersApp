@@ -23,9 +23,9 @@ namespace Skillbox.CustomersApp.ViewModel
         /// <param name="userSelectionViewModel">ViewModel клиента на случай работы в системе консультанта</param>
         public MainViewModel(ManagerViewModel customersViewModel, ConsultantViewModel userSelectionViewModel)
         {
-            CustomersViewModel = customersViewModel;
+            ManagerViewModel = customersViewModel;
             ConsultantViewModel = userSelectionViewModel;
-            SelectedViewModel = CustomersViewModel;
+            SelectedViewModel = ManagerViewModel;
             SelectViewModelCommand = new DelegateCommand(SelectViewModel);
             CloseWindowCommand = new DelegateCommand(CloseWindow);
         }
