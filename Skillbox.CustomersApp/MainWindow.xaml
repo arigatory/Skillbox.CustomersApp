@@ -36,14 +36,14 @@
             <MenuItem Header="_Выбор пользователя">
                 <MenuItem Header="_Менеджер" 
                           Command="{Binding SelectViewModelCommand}"
-                          CommandParameter="{Binding CustomersViewModel}">
+                          CommandParameter="{Binding ConsultantViewModel}">
                     <MenuItem.Icon>
                         <Image Source="/Images/manager.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="_Консультант"
                           Command="{Binding SelectViewModelCommand}"
-                          CommandParameter="{Binding UserSelectionViewModel}">
+                          CommandParameter="{Binding ManagerViewModel}">
                     <MenuItem.Icon>
                         <Image Source="/Images/consultant.png"/>
                     </MenuItem.Icon>
